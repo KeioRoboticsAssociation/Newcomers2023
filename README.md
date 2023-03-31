@@ -1,6 +1,6 @@
 # 新入生向けプログラム雛形(Nucleo f303k8 ,mbed OS v6.15)
 
-##前準備
+## 前準備
 vscodeに、platoform io ide　をインストールしておく
 
 コードの書き方については、()を参照。
@@ -16,5 +16,5 @@ vscodeに、platoform io ide　をインストールしておく
 1. 普通の PlatformIO プロジェクトとして使う
 
 
-## 注意
+### 注意
 mbedignore でコンパイルが省略されている機能を使用するときは`.mbedignore`ファイルを編集してください
