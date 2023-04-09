@@ -10,7 +10,7 @@ git をインストールしておく
 ## 初回使用時の準備
 1. clone してくる
 1. VSCode で開く
-1. VSCodeの画面下のターミナルのアイコンを開き、`pio system info`を実行して、python executableのパスをコピーする
+1. VSCodeの画面下のターミナルのアイコンを開き、(画像の通り、アイコンをクリックしてターミナルを開かないとうまくいかない)`pio system info`を実行して、python executableのパスをコピーする
 ![image](https://user-images.githubusercontent.com/42294158/193441843-c60f4508-5ce7-407b-a729-f37bd8822ad9.png)
 ![image](https://user-images.githubusercontent.com/42294158/193441875-a5dda286-e0c9-47c3-a6b3-673de7359cf7.png)
 
