@@ -1,21 +1,13 @@
-# F303_Mbed_Template
+# 新入生向けプログラム雛形(Nucleo f303k8 ,mbed OS v6.15)
 
-## これはなに？
+## 前準備
+vscodeに、platoform io ide　をインストールしておく
 
-Nucleo f303k8 を PlatformIO で mbed で開発するときのテンプレートです
+git をインストールしておく
 
-## 特徴
+コードの書き方については、()を参照。
 
-- mbedignore が設定してあるのでコンパイルが早い
-- PlatformIO でも mbed OS v6.15 が使える
-
-## 注意
-
-mbedignore でコンパイルが省略されている機能を使用するときは`.mbedignore`ファイルを編集してください
-
-## 使い方
-
-1. Use This Template を押して新しいリポジトリを作る
+## 初回使用時の準備
 1. clone してくる
 1. VSCode で開く
 1. VSCodeの画面下のターミナルのアイコンを開き、`pio system info`を実行して、python executableのパスをコピーする
@@ -24,3 +16,7 @@ mbedignore でコンパイルが省略されている機能を使用するとき
 
 1. ターミナルで`<python executableのパス> -m pip install jinja2 intelhex future prettytable six jsonschema`する
 1. 普通の PlatformIO プロジェクトとして使う
+
+
+### 注意
+mbedignore でコンパイルが省略されている機能を使用するときは`.mbedignore`ファイルを編集してください
