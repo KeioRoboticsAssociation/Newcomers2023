@@ -1,30 +1,47 @@
 #include <config.h>
 #include <mbed.h>
+const float deadzone = 0.05f;
 
 int main() {
-  // put your setup code here, to run once:
-  const float deadzone = 0.05f;  // deadzone
-  // const float distance = 0.5f;   // m
-  float l = 0.0f;
-  float r = 0.0f;
-  // float v = 0.0f;
-  // float omega = 0.0f;
+  float x;
+  float y;
+  const float coef = 0.7f;  // coefが並進に使われるパワー
 
   while (1) {
-    l = stick_x - 0.5f;  // -0.5<l<0.5
-    r = stick_y - 0.5f;
-    // v = sqrt(x * x + y * y);
-    // omega = atan2(y, x);
-    if (l > deadzone || l < -deadzone) {
-      if (l > 0.0f) {
+    x = (stick_x - 0.5f) * 2.0f;
+    y = (stick_y - 0.5f) * 2.0f;
+
+    if (y < deadzone && y > -deadzone) {
+      pwm_l = 0.0f;
+      pwm_r = 0.0f;
+    } else {
+      if (y > 0.0f) {
         dir_l = 1;
-        pwm_l = l;
+        dir_r = 1;
+        pwm_l = y * coef;
+        pwm_r = y * coef;
       } else {
         dir_l = 0;
-        pwm_l = -l;
+        dir_r = 0;
+        pwm_l = -y * coef;
+        pwm_r = -y * coef;
       }
-    } else {
-      pwm_l = 0.0f;
+    }
+
+    if (x > deadzone && x < -deadzone) {
+      if (y > 0) {
+        if (x > 0) {
+          pwm_r = y * coef + x * (1.0f - coef);
+        } else {
+          pwm_l = y * coef - x * (1.0f - coef);
+        }
+      } else {
+        if (x > 0) {
+          pwm_l = -y * coef - x * (1.0f - coef);
+        } else {
+          pwm_r = -y * coef + x * (1.0f - coef);
+        }
+      }
     }
   }
 }
