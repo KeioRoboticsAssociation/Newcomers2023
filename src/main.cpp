@@ -1,47 +1,35 @@
-#include <config.h>
 #include <mbed.h>
-const float deadzone = 0.05f;
+// DCモーターを回す
+// 以下のピン指定は例であり、実機とは対応しない。それぞれどのピンがどのような
+// ピン名で、デジタル、アナログ、入力、出力など、どのような機能を持っているかは、マイコンのデータシートを参照すること。
+DigitalOut dir(PA_8);  // デジタル出力　変数名dir(directionの意)　ピン名PA_8
+// 出力、入力という表現は、マイコン視点での表現である。
+PwmOut pwm(PA_9);  // pwm(pulset width modulationの意)　変数名pwm　ピン名PA_9
+// DCモーターを回す上でのパラメータは回転方向(0,1)と回転速度(0~1)の2つである。
+// dir,pwmへの値の代入で、それぞれに対応するピンの電圧を変化させる。
 
+// ジョイスティックの値を読み取る
+AnalogIn joy_x(PA_0);  // アナログ入力　変数名joy_x　ピン名PA_0
+AnalogIn joy_y(PA_1);  // アナログ入力　変数名joy_y　ピン名PA_1
+// ジョイスティックは、x,y軸方向の2つの値を持っている。それぞれの値は、0~1の範囲である。リアルタイムにジョイスティック
+// の入力を何かしらの処理に使うならば、while文などを使い常にジョイスティックの値を読み続ける必要が在る。
+
+// sample code
+// :ジョイスティックのx軸を左に傾ければDCモーターが左回転し、右に傾ければ右回転する。
 int main() {
   float x;
-  float y;
-  const float coef = 0.7f;  // coefが並進に使われるパワー
-
   while (1) {
-    x = (stick_x - 0.5f) * 2.0f;
-    y = (stick_y - 0.5f) * 2.0f;
+    x = (joy_x - 0.5) *
+        2;  // ジョイスティックの値を-1~1の範囲に変換(便利なので)
 
-    if (y < deadzone && y > -deadzone) {
-      pwm_l = 0.0f;
-      pwm_r = 0.0f;
-    } else {
-      if (y > 0.0f) {
-        dir_l = 1;
-        dir_r = 1;
-        pwm_l = y * coef;
-        pwm_r = y * coef;
-      } else {
-        dir_l = 0;
-        dir_r = 0;
-        pwm_l = -y * coef;
-        pwm_r = -y * coef;
-      }
-    }
-
-    if (x > deadzone && x < -deadzone) {
-      if (y > 0) {
-        if (x > 0) {
-          pwm_r = y * coef + x * (1.0f - coef);
-        } else {
-          pwm_l = y * coef - x * (1.0f - coef);
-        }
-      } else {
-        if (x > 0) {
-          pwm_l = -y * coef - x * (1.0f - coef);
-        } else {
-          pwm_r = -y * coef + x * (1.0f - coef);
-        }
-      }
+    if (x > 0) {  // ジョイスティックの値が0より大きい場合
+      dir = 1;    // DCモータの回転方向を1に設定
+      pwm = x;  // DCモータの回転速度をジョイスティックの値に設定
+    } else {    // ジョイスティックの値が0より小さい場合
+      dir = 0;  // DCモータの回転方向を0に設定
+      pwm = -x;  // DCモータの回転速度をジョイスティックの値に設定
+      //(pwmは0~1の範囲であることに注意)
     }
   }
 }
+// hint:ジョイスティックに何も触ってないのにモーターが少し回ってしまうときは、デッドゾーンを作ってみよう。
